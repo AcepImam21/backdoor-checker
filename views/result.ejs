@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Cek Backdoor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Dark mode styles */
+        body[data-theme='dark'] {
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        body[data-theme='dark'] .bg-white {
+            background-color: #2d3748; /* Dark card background */
+        }
+        body[data-theme='dark'] .text-blue-600 {
+            color: #63b3ed; /* Light blue text */
+        }
+        body[data-theme='dark'] .text-gray-800 {
+            color: #e2e8f0; /* Light text for URL */
+        }
+        body[data-theme='dark'] .text-gray-700 {
+            color: #e2e8f0; /* Light text for labels and error messages */
+        }
+        body[data-theme='dark'] a {
+            color: #63b3ed; /* Light blue link color */
+        }
+    </style>
+</head>
+<body data-theme="light" class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto p-5">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-blue-600 mt-10">Hasil Cek Backdoor</h1>
+            <p class="text-lg text-gray-600 mt-2">Berikut adalah hasil pengecekan backdoor untuk URL yang Anda masukkan.</p>
+            <button id="theme-toggle" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Dark Mode</button>
+        </header>
+        <main>
+            <div class="max-w-2xl mx-auto mt-10 p-5 bg-white shadow-lg rounded-lg">
+                <h2 class="text-2xl font-bold mb-4 text-blue-600">URL: <span class="text-gray-800"><%= url %></span></h2>
+                <% if (error) { %>
+                    <p class="text-red-500">Terjadi kesalahan: <%= error %></p>
+                <% } else if (isBackdoor) { %>
+                    <p class="text-red-500">Backdoor ditemukan!</p>
+                    <ul class="list-disc list-inside mt-2">
+                        <% backdoorDetails.forEach(function(detail) { %>
+                            <li><%= detail.description %> - File/Dir: <%= detail.fileOrDir %></li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-green-500">Tidak ada backdoor yang ditemukan.</p>
+                <% } %>
+                <a href="/" class="block mt-5 text-center text-blue-500 hover:underline">Kembali ke halaman utama</a>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Load dark mode setting from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', currentTheme);
+        });
+
+        // Toggle dark mode
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme); // Save the new theme in localStorage
+        });
+    </script>
+</body>
+</html>
